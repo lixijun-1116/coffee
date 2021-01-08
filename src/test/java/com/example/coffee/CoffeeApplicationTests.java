@@ -1,0 +1,307 @@
+package com.example.coffee;
+
+import com.example.coffee.dao.admins.AdAdminDao;
+import com.example.coffee.model.dto.UserAdminVo;
+import com.example.coffee.model.entity.AdAdmin;
+import com.example.coffee.service.admins.ChUserInfoService;
+import com.example.coffee.utils.AppriseMonthUtil;
+import com.example.coffee.utils.PDFUtils;
+import com.example.coffee.utils.PdfHtml;
+import com.example.coffee.utils.PdfHtml2;
+import com.example.coffee.utils.redis.RedisUtil;
+import com.github.pagehelper.PageInfo;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.annotation.Resource;
+import java.io.File;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class CoffeeApplicationTests {
+
+    @Resource
+    private AdAdminDao adAdminDao;
+    @Resource
+    private ChUserInfoService chUserInfoService;
+    int[] array={3,5,2,15,11,6,20,33,1,10};
+
+    //    分组：10/2=5
+//    {3,6},{5,20},{2,33},{15,1},{11,10}
+//    对每一组排序
+//    {3,6},{5,20},{2,33},{1,15},{10,11}
+//    变成
+//    {3,5,2,1,10,6,20,33,15,11};
+//
+//    再分一次：5/2=2
+//    {3,2,10,20,15},{5,1,6,33,11}
+//
+//    {2,3,10,15,20},{1,5,6,11,33}
+//    整体变成
+//    {2,1,3,5,10,6,15,11,20,33}
+//
+//    再分一次：2/2=1
+//    什么时候等于1，什么时候不再分了
+//    直接最后一次插入排序
+    public static int a(int b){
+
+        int c=1;
+        for(int i=1;i<b;i++){
+            c=(c+1)*2;
+        }
+        return c;
+
+    }
+//冒泡排序
+    public static void b(int a, int b,int c){
+        int [] aa = new int[]{a,b,c};
+        int temp;
+        for(int i=0;i<aa.length;i++){
+            for (int j=0;j<aa.length-1-i;j++){
+                if (aa[j]>aa[j+1]){
+                    temp=aa[j];
+                    aa[j]=aa[j+1];
+                    aa[j+1]=temp;
+                }
+            }
+        }
+        for (int i : aa) {
+            System.out.println(i);
+        }
+    }
+
+    //选择排序
+    public static void selectSort(int a, int b,int c) {
+        int[] arr = new int[]{a, b, c};
+
+        // 总共要经过 N-1 轮比较
+        for (int i = 0; i < arr.length - 1; i++) {
+            int min = i;
+
+            // 每轮需要比较的次数 N-i
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[j] < arr[min]) {
+                    // 记录目前能找到的最小值元素的下标
+                    min = j;
+                }
+            }
+
+            // 将找到的最小值和i位置所在的值进行交换
+            if (i != min) {
+                int tmp = arr[i];
+                arr[i] = arr[min];
+                arr[min] = tmp;
+            }
+            for (int k : arr) {
+                System.out.println(k);
+            }
+        }
+    }
+
+    //插入排序
+    public int[] insertSort() {
+
+        int current;
+        for (int i=0;i<array.length-1;i++){
+            current=array[i+1];
+            int preIndex=i;
+            while (preIndex>=0 && current < array[preIndex]){
+                array[preIndex + 1]=array[preIndex];
+                preIndex--;
+            }
+            array[preIndex + 1]=current;
+        }
+        return array;
+    }
+    @Test
+    public void c(){
+        int a=a(20);
+        System.out.println(a);
+    }
+
+    @Resource
+    private RedisUtil redisUtil;
+    @Test
+    public void b(){
+
+
+    }
+
+    @Test
+    public void contextLoads() {
+        PageInfo<UserAdminVo> pageInfo = chUserInfoService.queryAllUserByVip(3,2,null);
+        System.out.println(pageInfo);
+        List<UserAdminVo> list = pageInfo.getList();
+        for (UserAdminVo userAdminVo : list) {
+            System.out.println(userAdminVo);
+        }
+    }
+
+    @Test
+    public void test(){
+        List<String> list = PdfHtml2.PdfToImage("https://hdrs-ext-test.oss-cn-szfinance.aliyuncs.com/eshop/sit/file/PA042产品条款.pdf");
+        for (String s : list) {
+            System.out.println(s);
+        }
+        //PdfHtml.PdfToImage("E:\\KGBD2010\\CCAR-290-R2.pdf");
+        //PDFUtils.pdf2multiImage("E:\\KGBD2010\\CCAR-290-R2.pdf","E:\\a.jpg");
+//        List<String> list = PDFUtils.pdfToImagePath("E:\\KGBD2010\\CCAR-290-R2.pdf");
+//        for (String s : list) {
+//            System.out.println(s);
+//        }
+    }
+
+    @Test
+    public void test01(){
+        File file = new File("E:\\Pdf2HTML");
+        boolean delete = file.delete();
+        System.out.println(delete);
+    }
+
+    @Test
+    public void test02(){
+        System.out.println(test03(6));
+    }
+
+    public static int test03(int n){
+        if(n == 1 || n == 2){
+            return 1;
+        }
+        return test03(n-1) + test03(n-2);
+    }
+
+    @Test
+    public void test05(){
+        AdAdmin admin1 = new AdAdmin();
+        admin1.setAid(1);
+        admin1.setaName("aaa");
+        AdAdmin admin2 = new AdAdmin();
+        admin2.setAid(2);
+        admin2.setaName("bbb");
+        AdAdmin admin3 = new AdAdmin();
+        admin3.setAid(3);
+        admin3.setaName("ccc");
+        AdAdmin admin4 = new AdAdmin();
+        admin4.setAid(4);
+        admin4.setaName("ddd");
+        AdAdmin admin5 = new AdAdmin();
+        admin5.setAid(5);
+        admin5.setaName("eee");
+        List<AdAdmin> list = new ArrayList<>();
+        list.add(admin1);
+        list.add(admin2);
+        list.add(admin3);
+        list.add(admin4);
+        list.add(admin5);
+
+
+        AdAdmin admin6 = new AdAdmin();
+        admin6.setAid(2);
+        admin6.setAvatar("bbbb");
+        AdAdmin admin7 = new AdAdmin();
+        admin7.setAid(3);
+        admin7.setAvatar("cccc");
+        AdAdmin admin8 = new AdAdmin();
+        admin8.setAid(4);
+        admin8.setAvatar("dddd");
+        List<AdAdmin> list2 = new ArrayList<>();
+        list2.add(admin6);
+        list2.add(admin7);
+        list2.add(admin8);
+        for (AdAdmin admin : list) {
+            if(list2!=null && list2.size()>0){
+                for (AdAdmin adAdmin : list2) {
+                    if(admin.getAid()==adAdmin.getAid()){
+                        admin.setAvatar(adAdmin.getAvatar());
+                        break;
+                    }else{
+                        admin.setAvatar("0");
+                    }
+                }
+
+            }
+        }
+//        for (AdAdmin admin : list2) {
+//            if(list!=null && list.size()>0){
+//                for (AdAdmin adAdmin : list) {
+//                    if(adAdmin.getAid()==admin.getAid()){
+//                        adAdmin.setAvatar(admin.getAvatar());
+//                    }else{
+//                        adAdmin.setAvatar("0");
+//                        continue;
+//                    }
+//                }
+//            }
+//
+//        }
+        for (AdAdmin admin : list) {
+            System.out.println(admin.getAid()+"----"+admin.getAvatar());
+        }
+    }
+
+    @Test
+    public void test04(){
+        double a1 = 125.123;
+        BigDecimal b   =   new   BigDecimal(a1);
+        double   f1   =   b.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+        System.out.println(f1);
+        DecimalFormat df   = new DecimalFormat("#0.000");
+
+        double d1 = 3.23556;
+        double d2 = 0;
+        double d3 = 2.0;
+        System.out.println("d1="+Double.parseDouble(df.format(d1)));
+        System.out.println("d2="+df.format(d2));
+        System.out.println("d3="+df.format(d3));
+        Date date = new Date();
+        long l = System.nanoTime();
+        date.setTime(l);
+        String s = AppriseMonthUtil.convertDateToString(date,AppriseMonthUtil.DATE_MS_PATTERN);
+        System.out.println(s);
+        long l1 = System.currentTimeMillis();
+        date.setTime(l1);
+        String s1 = AppriseMonthUtil.convertDateToString(date,AppriseMonthUtil.DATE_MS_PATTERN);
+        System.out.println(s1);
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        list.add(6);
+        list.add(7);
+        list.forEach(item -> {
+            if (item == 2){
+                item += 9;
+            }
+            System.out.println(item);
+        });
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("code",200);
+        map.put("message","error");
+        map.put("data","真实数据");
+        map.forEach((key,value)->{
+            System.out.println(
+                    key+":"+value
+            );
+        });
+    }
+    @Test
+    public void test10(){
+        int i = (int) System.currentTimeMillis();
+        System.out.println(i);
+    }
+
+
+
+
+
+
+
+}

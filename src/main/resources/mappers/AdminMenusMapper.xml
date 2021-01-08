@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.coffee.dao.admins.AdminMenusDao">
+    <resultMap id="BaseResultMap" type="com.example.coffee.model.dto.AdminMenusDto">
+        <id column="menu_id" property="mid" />
+        <result column="content"  property="content" />
+        <result column="icon_path"  property="icon" />
+    </resultMap>
+    <select id="getTopMenu" parameterType="integer" resultMap="BaseResultMap">
+    select * from ad_roles m join admin_menus a on m.menu_id=a.menu_id
+    where m.admin_type=#{adminType} and  a.`level`=1 order by a.`index` asc
+  </select>
+
+    <select id="getChildren" parameterType="integer" resultMap="BaseResultMap">
+    select * from ad_roles m join admin_menus a on m.menu_id=a.menu_id
+    where m.admin_type=#{adminType} and  a.`level`=2 and a.sub_id=#{sid} order by a.`index` asc
+  </select>
+</mapper>

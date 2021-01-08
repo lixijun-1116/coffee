@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.coffee.dao.admins.AdAdminDao">
+  <resultMap id="BaseResultMap" type="com.example.coffee.model.entity.AdAdmin">
+    <id column="aid" jdbcType="INTEGER" property="aid" />
+    <result column="aname" jdbcType="VARCHAR" property="aName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="admin_type" jdbcType="INTEGER" property="adminType"/>
+    <result column="mail" jdbcType="VARCHAR" property="mail"/>
+  </resultMap>
+  <select id="getAdAdminByPhoneAndPassword" parameterType="string" resultMap="BaseResultMap">
+    select * from ad_admin where phone=#{phone} and password=#{password}
+  </select>
+  <select id="queryAdmins" resultMap="BaseResultMap">
+    select * from ad_admin where aname like concat('%',#{query},'%') or
+    phone like concat('%',#{query},'%')
+    limit #{index},#{pageSize}
+  </select>
+  <select id="getTotal" resultType="integer">
+    select count(aid)  from ad_admin where aname like concat('%',#{query},'%') or
+    phone like concat('%',#{query},'%')
+  </select>
+  <update id="upAdminStatus">
+    update ad_admin set status=#{status} where aid=#{aid}
+  </update>
+  <select id="getAdAdminByAid" resultMap="BaseResultMap">
+    select * from ad_admin where aid=#{aid}
+  </select>
+  <insert id="addAdAdmin" parameterType="com.example.coffee.model.entity.AdAdmin">
+    insert into ad_admin (aname,phone,password,createTime,updateTime,admin_type,mail)
+    values (#{aName},#{phone},#{password},NOW(),NOW(),#{adminType},#{mail})
+  </insert>
+  <sql id="test">
+     where phone=#{phone}
+  </sql>
+
+  <select id="unqPhone" resultType="integer">
+    select count(*) from ad_admin
+    <include refid="test"></include>
+  </select>
+  <update id="upAdAdmin">
+    update ad_admin set phone=#{phone} , mail=#{mail} where aid=#{aid}
+  </update>
+  <delete id="delAdAdmin">
+    delete from ad_admin where aid=#{aid}
+  </delete>
+  <select id="all" resultMap="BaseResultMap">
+
+    call test()
+
+  </select>
+</mapper>

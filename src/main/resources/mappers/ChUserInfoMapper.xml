@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.coffee.dao.admins.ChUserInfoDao">
+  <resultMap id="BaseResultMap" type="com.example.coffee.model.entity.ChUserinfo">
+    <id column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="uname" jdbcType="VARCHAR" property="uName" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="vip" jdbcType="INTEGER" property="vip" />
+    <result column="expirationTime" jdbcType="DATE" property="expirationTime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <resultMap id="UserAdminVoMap" type="com.example.coffee.model.dto.UserAdminVo">
+    <id column="user_id" jdbcType="VARCHAR" property="id" />
+    <result column="uname" jdbcType="VARCHAR" property="uName" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="vip" jdbcType="INTEGER" property="vip" />
+    <result column="createTime" jdbcType="DATE" property="createTime" />
+    <result column="status" jdbcType="TIMESTAMP" property="status" />
+    <result column="phone" jdbcType="TIMESTAMP" property="phone" />
+  </resultMap>
+
+
+
+  <select id="selectAllUserByVip" resultMap="UserAdminVoMap">
+    select ci.user_id,ci.uname,ci.gender,cs.phone,cs.createTime,ci.address,ci.vip,cs.`status`  from
+    ch_user cs join ch_userinfo ci
+    on cs.uid=ci.user_id
+    and ci.vip=1
+    <if test="uName != null and uName != ''">
+      and ci.uname like concat("%",#{uName},"%")
+    </if>
+  </select>
+
+  <update id="updateUserVip" parameterType="string">
+    update  ch_userinfo set vip=0 where user_id=#{userId}
+  </update>
+
+
+</mapper>

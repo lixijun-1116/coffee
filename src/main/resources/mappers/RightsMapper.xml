@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.coffee.dao.admins.RightsDao">
+    <select id="getRights" resultType="com.example.coffee.model.entity.Right">
+        select * from rights order by rlevel
+    </select>
+    <select id="rolesBaseInfo" resultMap="roleBase">
+select * FROM (select * from admin_roles a left join mid_role_right b on a.arid=b.roleid) c join rights d on c.rightid=d.rid where d.rlevel=1
+    </select>
+    <select id="getSecondRightByRole" resultMap="rightFirst">
+        select * from (select * from admin_roles a
+        left join mid_role_right b on a.arid=b.roleid) c join
+         rights d ON c.rightid=d.rid where d.rlevel=2 and c.arid=#{roleid} AND d.subid=#{subid}
+    </select>
+
+    <select id="getThirdRightByRole" resultMap="rightSecond">
+    select * from (select * from admin_roles a left join mid_role_right b on a.arid=b.roleid) c
+        join rights d ON c.rightid=d.rid where d.rlevel=3 and c.arid=#{roleid} AND d.subid=#{subid}
+    </select>
+
+
+    <delete id="delRightWithRole">
+        delete from mid_role_right where roleid=#{roleid} and rightid=#{rightid}
+    </delete>
+
+    <select id="getRightsBySid" resultType="com.example.coffee.model.entity.Right">
+        select * from rights where subid=#{subid}
+    </select>
+
+    <delete id="delRightsByRole">
+        delete from mid_role_right where roleid=#{roleid}
+    </delete>
+
+    <insert id="addRightsByRole">
+        insert into mid_role_right(roleid,rightid) values
+        <foreach collection="rights" separator="," item="item">
+            (#{roleid},#{item})
+        </foreach>
+    </insert>
+    
+    <resultMap id="roleBase" type="com.example.coffee.model.dto.RoleDto">
+        <id property="rid" column="roleid"></id>
+        <result property="status" column="status"></result>
+        <result property="roleName" column="roleName"></result>
+        <result property="roleDesc" column="roleDesc"></result>
+        <collection property="rights"   ofType="com.example.coffee.model.dto.RightDtoFirst">
+            <result property="rid" column="rid"></result>
+            <result property="rlevel" column="rlevel"></result>
+            <result property="rname" column="rname"></result>
+            <result property="path" column="path"></result>
+        </collection>
+    </resultMap>
+    <resultMap id="rightFirst" type="com.example.coffee.model.dto.RightDtoSecond">
+        <result property="rid" column="rid"></result>
+        <result property="rlevel" column="rlevel"></result>
+        <result property="rname" column="rname"></result>
+        <result property="path" column="path"></result>
+    </resultMap>
+
+    <resultMap id="rightSecond" type="com.example.coffee.model.entity.Right">
+        <result property="rid" column="rid"></result>
+        <result property="rlevel" column="rlevel"></result>
+        <result property="rname" column="rname"></result>
+        <result property="path" column="path"></result>
+    </resultMap>
+</mapper>

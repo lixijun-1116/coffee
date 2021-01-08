@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.coffee.dao.admins.DiscoveryDao">
+    <resultMap id="discoveryMap" type="com.example.coffee.model.entity.Discovery">
+        <id property="discoveryId" column="discovery_id"></id>
+    </resultMap>
+    <insert id="addDiscovery" parameterType="com.example.coffee.model.entity.Discovery">
+        insert into ch_discovery (discovery_id,author,title,cover,content,createTime,updateTime) values(#{discoveryId},#{author},#{title},#{cover},#{content},now(),now())
+    </insert>
+    <update id="updateDiscovery" parameterType="com.example.coffee.model.entity.Discovery">
+        update ch_discovery set title=#{title},cover=#{cover},content=#{content},status=#{status} where discovery_id=#{discoveryId}
+    </update>
+    <update id="deleteDiscovery" parameterType="string">
+        update ch_discovery set status=2 where discovery_id=#{discoveryId}
+    </update>
+</mapper>
