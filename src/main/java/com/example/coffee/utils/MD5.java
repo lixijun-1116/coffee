@@ -43,14 +43,25 @@ public class MD5 {
         return s;
 
     }
-
+    static boolean foo(char c){
+        System.out.println(c);
+        return true;
+    }
     // 测试主函数
     public static void main(String args[]) {
-        String s = new String("121212");
-        System.out.println("原始：" + s);
-//        System.out.println("MD5后：" + string2MD5(s));
-        System.out.println("加密的：" + convertMD5(s));
-        System.out.println("解密的：" + convertMD5(convertMD5(s)));
-
+//        String s = new String("121212");
+//        System.out.println("原始：" + s);
+////        System.out.println("MD5后：" + string2MD5(s));
+//        System.out.println("加密的：" + convertMD5(s));
+//        System.out.println("解密的：" + convertMD5(convertMD5(s)));
+//        int i = 0;
+//        for(foo('a'); foo('b') && (i<2); foo('c')){
+//            i++;
+//            foo('d');
+//        }
+        String a = "110**************547";
+        String b = "110108197106295710";
+        System.out.println(a.length());
+        System.out.println(b.length());
     }
 }
