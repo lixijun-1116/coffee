@@ -64,7 +64,7 @@ public class MD5 {
 //            i++;
 //            foo('d');
 //        }
-        String a = "140511199811160912";
+        String a = "140511199801110912";
         int i = countAge(a);
         System.out.println(i);
     }
@@ -93,8 +93,10 @@ public class MD5 {
         String fday=format.format(date).substring(8,10);//
         int age = 0;
         if(Integer.parseInt(yue) == Integer.parseInt(fyue)){//如果月份相同
-            if(Integer.parseInt(day) <= Integer.parseInt(fday)){//说明已经过了生日或者今天是生日
+            if(Integer.parseInt(day) < Integer.parseInt(fday)){//说明已经过了生日或者今天是生日
                 age = Integer.parseInt(fyear) - Integer.parseInt(year);
+            }else{
+                age = Integer.parseInt(fyear) - Integer.parseInt(year) - 1;
             }
         }else{
             if(Integer.parseInt(yue) < Integer.parseInt(fyue)){
