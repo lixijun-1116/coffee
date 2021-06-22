@@ -18,6 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -298,8 +300,69 @@ public class CoffeeApplicationTests {
         System.out.println(i);
     }
 
+    @Test
+    public void big(){
+        AdAdmin admin = new AdAdmin();
+        List list = new ArrayList();
+        admin.setaName("微服1");
+        admin.setAid(1);
+        list.add(admin);
+        admin.setaName("微服2");
+        admin.setAid(2);
+        list.add(admin);
+        admin.setaName("微服3");
+        admin.setAid(3);
+        list.add(admin);
+        for (Object o : list) {
+            System.out.println(o.toString());
+        }
 
+        List list2 = new ArrayList();
+        String a =new String();
+        for(int i=0; i<=3;i++){
+            a = String.valueOf(i);
+            list2.add(a);
+        }
+        for (Object o : list2) {
+            System.out.println(o);
+        }
 
+    }
+
+    @Test
+    public void getInetAddress() throws UnknownHostException {
+        // 获取计算机名
+        String name = InetAddress.getLocalHost().getHostName();
+        // 获取IP地址
+        String ip = InetAddress.getLocalHost().getHostAddress();
+        System.out.println("计算机名："+name);
+        System.out.println("IP地址："+ip);
+    }
+
+    @Test
+    public void getInetAddresss() throws UnknownHostException {
+        Integer nowMonthInt = AppriseMonthUtil.calculationMonth(new Date());
+        System.out.println(nowMonthInt);
+
+        Integer integer = AppriseMonthUtil.calculationMonth("2021-03");
+        System.out.println(integer);
+    }
+
+    @Test
+    public void getSplit(){
+        String pdfPath = "/u01/app/upload/2021/05/25/20212825032800/pdf_pagenum/先生的星无忧（星动版）重大疾病保险建议书.pdf";
+        String[] datePdf = pdfPath.split("/");
+        for (String s : datePdf) {
+            System.out.print(s+"        ");
+        }
+        String[] pdfName = datePdf[9].split(".pdf");
+        for (String s : pdfName) {
+            System.out.println();
+            System.out.print(s+"        ");
+        }
+        String url = "https://uwcsp.pflife.com.cn/pdf/" + datePdf[4]+ "@" + datePdf[5] + "@"+ datePdf[6] + "@"+ datePdf[7]+ "@" + datePdf[8] + "@" + pdfName[0]+".do";
+        System.out.println(url);
+    }
 
 
 

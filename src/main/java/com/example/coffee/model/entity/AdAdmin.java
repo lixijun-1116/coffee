@@ -162,16 +162,7 @@ public class AdAdmin implements Serializable {
         return "AdAdmin{" +
                 "aid=" + aid +
                 ", aName='" + aName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", introduction='" + introduction + '\'' +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", adminType=" + adminType +
-                ", state=" + state +
-                ", mail='" + mail + '\'' +
+
                 '}';
     }
 }
