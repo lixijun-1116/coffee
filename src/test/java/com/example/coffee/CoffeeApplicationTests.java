@@ -10,6 +10,7 @@ import com.example.coffee.utils.PdfHtml;
 import com.example.coffee.utils.PdfHtml2;
 import com.example.coffee.utils.redis.RedisUtil;
 import com.github.pagehelper.PageInfo;
+import org.elasticsearch.common.recycler.Recycler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +21,9 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -330,6 +333,40 @@ public class CoffeeApplicationTests {
     }
 
     @Test
+    public void big2(){
+        AdAdmin admin = new AdAdmin();
+        List<AdAdmin> list = new ArrayList<AdAdmin>();
+        admin.setaName("微服1");
+        admin.setAid(1);
+        list.add(admin);
+        AdAdmin admin2 = new AdAdmin();
+        admin2.setaName("微服2");
+        admin2.setAid(2);
+        list.add(admin2);
+        AdAdmin admin3 = new AdAdmin();
+        admin3.setaName("微服3");
+        admin3.setAid(3);
+        list.add(admin3);
+        AdAdmin admin4 = new AdAdmin();
+        admin4.setaName("微服4");
+        admin4.setAid(4);
+        list.add(admin4);
+        Iterator<AdAdmin> iterator = list.iterator();
+        while (iterator.hasNext()){
+            AdAdmin next = iterator.next();
+            if(next.getAid() == 1 || next.getAid() == 3){
+                iterator.remove();
+            }
+        }
+
+        for (AdAdmin o : list) {
+            System.out.println(o);
+        }
+
+
+    }
+
+    @Test
     public void getInetAddress() throws UnknownHostException {
         // 获取计算机名
         String name = InetAddress.getLocalHost().getHostName();
@@ -364,7 +401,87 @@ public class CoffeeApplicationTests {
         System.out.println(url);
     }
 
+    @Test
+    public void getSplit1(){
+        String valueFormat = (new BigDecimal("-.1")).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_HALF_UP).negate().toString()+"%";
+        System.out.println(valueFormat);
+    }
 
+    @Test
+    public void g1(){
+        int i1 = 128;
+        Integer i2 = 128;
+        Integer i3 = new Integer(128);
+        System.out.println(i1==i2);
+        System.out.println(i1==i3);
+        Integer i4=127;
+        Integer i5=127;
+        Integer i6=128;
+        Integer i7=128;
+        System.out.println(i4==i5);
+        System.out.println(i6==i7);
+
+        Integer i8 = new Integer(127);
+        Integer i9 = new Integer(127);
+
+        System.out.println(i8==i9);
+        System.out.println(i8.equals(i9));
+        System.out.println(i4==i8);
+    }
+
+   @Test
+    public void g2(){
+//        List<String> list1 = new ArrayList<>();
+//        list1.add("1");
+//        list1.add("2");
+//        list1.add("3");
+//       for (String string : list1) {
+//           if("1".equals(string)){
+//               list1.remove(string);
+//           }
+//       }
+//       System.out.println(list1.toString());
+
+//       List<String> list2 = new ArrayList<>();
+//       list2.add("1");
+//       list2.add("2");
+//       list2.add("3");
+//       Iterator it = list2.iterator();
+//       while (it.hasNext()){
+//           String str = (String)it.next();
+//           if("2".equals(str)){
+//               list2.remove(str);
+//           }
+//       }
+//       System.out.println(list2);
+
+       List<String> alist = new ArrayList<>();
+       alist.add("1");
+       alist.add("2");
+       alist.add("3");
+       Iterator it1 = alist.iterator();
+       while (it1.hasNext()){
+
+           if("3".equals(it1.next())){
+               it1.remove();
+           }
+       }
+       System.out.println(alist.toString());
+    }
+    
+    @Test
+    public void g3(){
+        Calendar terminalDate = new GregorianCalendar();
+        Calendar terminalDate2 = new GregorianCalendar();
+        terminalDate.setTime(new Date());
+        terminalDate.add(Calendar.MONTH,3);
+        terminalDate.set(Calendar.DAY_OF_MONTH,terminalDate.get(Calendar.DAY_OF_MONTH)-1);
+        terminalDate2.setTime(new Date());
+        terminalDate2.set(Calendar.DAY_OF_MONTH,terminalDate2.get(Calendar.DAY_OF_MONTH)-1);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println(format.format(terminalDate.getTime()));
+        System.out.println(format.format(terminalDate2.getTime()));
+    }
 
 
 }
