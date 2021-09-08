@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import org.elasticsearch.common.recycler.Recycler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -481,6 +482,48 @@ public class CoffeeApplicationTests {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println(format.format(terminalDate.getTime()));
         System.out.println(format.format(terminalDate2.getTime()));
+    }
+
+
+
+    @Test
+    public void g4(){
+        Double a = 1.25;
+        String dt = "200";
+        System.out.println(dt);
+        System.out.println(Double.valueOf(dt));
+        Double b = Double.valueOf(dt);
+        System.out.println(a>b);
+    }
+
+    @Test
+    public void g5(){
+        Map<String,String> map = g6();
+        map.forEach((key,value)->{
+            System.out.println(
+                    key+":"+value
+            );
+        });
+        TrackInterview trackInterview = new TrackInterview();
+        trackInterview.setId(0);
+        String agentCode = trackInterview.getUserCode();
+        System.out.println(agentCode);
+        String sql = "select b.id,b.parentId,b.branchCode,b.branchLevel from gconline..SysUser s LEFT JOIN gconline..Branch b ON b.id = s.branchId where userCode='" + agentCode + "'";
+        System.out.println(sql);
+    }
+
+    public Map<String,String> g6(){
+        System.out.println(StringUtil.isEmpty(""));
+        Map<String,String> map = new HashMap<>();
+        String[] stringArray = null;
+        String distanceLevel2 = "30";
+        stringArray = distanceLevel2.split(",");
+        if (StringUtil.contains(stringArray, null)) {
+            map.put("distance", "false");
+        }else {
+            map.put("distance", "true");
+        }
+        return map;
     }
 
 
