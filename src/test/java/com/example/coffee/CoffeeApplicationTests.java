@@ -1,13 +1,12 @@
 package com.example.coffee;
 
 import com.example.coffee.dao.admins.AdAdminDao;
+import com.example.coffee.dao.admins.AdminDao;
 import com.example.coffee.model.dto.UserAdminVo;
 import com.example.coffee.model.entity.AdAdmin;
+import com.example.coffee.model.entity.Admin;
 import com.example.coffee.service.admins.ChUserInfoService;
-import com.example.coffee.utils.AppriseMonthUtil;
-import com.example.coffee.utils.PDFUtils;
-import com.example.coffee.utils.PdfHtml;
-import com.example.coffee.utils.PdfHtml2;
+import com.example.coffee.utils.*;
 import com.example.coffee.utils.redis.RedisUtil;
 import com.github.pagehelper.PageInfo;
 import org.elasticsearch.common.recycler.Recycler;
@@ -18,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.awt.*;
 import java.io.File;
 import java.math.BigDecimal;
 import java.net.InetAddress;
@@ -27,6 +27,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,6 +35,9 @@ public class CoffeeApplicationTests {
 
     @Resource
     private AdAdminDao adAdminDao;
+
+    @Resource
+    private AdminDao adminDao;
     @Resource
     private ChUserInfoService chUserInfoService;
     int[] array={3,5,2,15,11,6,20,33,1,10};
@@ -526,5 +530,56 @@ public class CoffeeApplicationTests {
         return map;
     }
 
+    @Test
+    public void h1(){
+        String[] chars = new String[] { "a", "b", "c", "d", "e", "f",
+                "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
+                "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5",
+                "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I",
+                "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+                "W", "X", "Y", "Z" };
+        Admin total = adminDao.getTotal(1);
+        System.out.println(total.getAid());
+        System.out.println(total.getaName());
 
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        StringBuffer shortBuffer = new StringBuffer();
+        for (int i = 0; i < 8; i++) {
+            String str = uuid.substring(i * 4, i * 4 + 4);
+            int x = Integer.parseInt(str, 16);
+            shortBuffer.append(chars[x % 0x3E]);
+        }
+        String policyNo = shortBuffer.toString();
+        System.out.println(policyNo);
+    }
+    @Test
+    public void H2(){
+
+        for(int i = 0;i<=5;i++){
+            long l = System.currentTimeMillis();
+            System.out.println(i+"-"+l);
+        }
+
+    }
+
+    @Test
+    public void H3(){
+        List<AdAdmin> all = adAdminDao.all();
+        System.out.println(all.size());
+        List<AdAdmin> list = AdAdminTrs.list;
+        System.out.println(list.size());
+        for (AdAdmin adAdmin : list) {
+            System.out.println(adAdmin);
+        }
+
+    }
+
+    @Test
+    public void H4(){
+        Date date=new Date();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
+        String valueOf = String.valueOf(sdf.format(date));
+        //WaterMarkUtils.createMark("D://preview - 副本.jpg",valueOf, Color.red,100f);
+        WaterMarkUtils.mark("D://preview - 副本.jpg","D://preview - 副本1.jpg",Color.red,"VIVO X30");
+    }
 }

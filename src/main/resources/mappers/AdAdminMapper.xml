@@ -52,7 +52,13 @@
   </delete>
   <select id="all" resultMap="BaseResultMap">
 
-    call test()
+   select * from ad_admin
+
+  </select>
+
+  <select id="all1" resultMap="BaseResultMap">
+
+    select aname,phone from ad_admin
 
   </select>
 </mapper>

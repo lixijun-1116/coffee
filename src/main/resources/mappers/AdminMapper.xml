@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.coffee.dao.admins.AdminDao">
+  <resultMap id="BaseResultMap" type="com.example.coffee.model.entity.Admin">
+    <id column="aid" jdbcType="INTEGER" property="aid" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="admin_type" jdbcType="INTEGER" property="adminType"/>
+    <result column="mail" jdbcType="VARCHAR" property="mail"/>
+  </resultMap>
+
+  <select id="getTotal" resultMap="BaseResultMap">
+    select * from ad_admin where aid=#{aid}
+  </select>
+
+</mapper>
